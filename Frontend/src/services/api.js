@@ -4,7 +4,7 @@ import axios from "axios";
 
 // "https://backend-1-0-0-r7to.onrender.com/api"
 const api = axios.create({
-  baseURL:  "http://localhost:5000/api",
+  baseURL:  "https://ulfat.onrender.com/api",
   withCredentials: true,
 });
 
