@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  scroll-behavior: smooth;
+}
+@font-face {
+  font-family: "SEGO";
+  src: url(../media/sego/SEGO.ttf);
+}
+.customScroller {
+  overflow-y: scroll;
+}
+.sego{
+  font-family: "SEGO";
+}
+.customScroller::-webkit-scrollbar {
+  width: 0px;
+}
+@media (max-width: 640px) {
+  .customScrollerMini {
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
+  .customScrollerMini::-webkit-scrollbar {
+  width: 0px;
+}
+}
