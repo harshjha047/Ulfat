@@ -1,8 +1,5 @@
 import axios from "axios";
 
-// console.log(import.meta.env.VITE_API_BASE_URL);
-
-// "https://backend-1-0-0-r7to.onrender.com/api"
 const api = axios.create({
   baseURL:  "https://ulfat.onrender.com/api",
   withCredentials: true,
