@@ -1,9 +1,10 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL:  "https://ulfat.onrender.com/api",
+  baseURL: import.meta.env.VITE_API_BASE_URL,
   withCredentials: true,
 });
+console.log(import.meta.env.VITE_API_BASE_URL);
 
 export const setAccessToken = (token) => {
   if (token) {
