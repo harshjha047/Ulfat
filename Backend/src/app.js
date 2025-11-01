@@ -19,7 +19,7 @@ const app = express();
 // Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-const allowedOrigins = [ "https://ecomm-react-6lxg.vercel.app","http://localhost:5173","http://localhost:5174"];
+const allowedOrigins = [ "https://ecomm-react-6lxg-nezxzk28z-harshjha047s-projects.vercel.app","http://localhost:5173","http://localhost:5174"];
 
 app.use(cors({
   origin: (origin, callback) => { 
