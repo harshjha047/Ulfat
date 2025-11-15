@@ -1,7 +1,7 @@
 // src/services/orderService.js
 import api from "./api";
-import { loadStripe } from "@stripe/stripe-js";
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
+// import { loadStripe } from "@stripe/stripe-js";
+// const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
 
 const orderService = {
@@ -38,7 +38,7 @@ const orderService = {
   },
 
   updateOrderStatus: async (orderId, status) => {
-    const { data } = await api.put(`/admin/orders/${orderId}`, { status });
+    const { data } = await api.patch(`/admin/orders/${orderId}/status`, status );
     return data;
   },
 };

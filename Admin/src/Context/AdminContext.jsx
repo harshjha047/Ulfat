@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import authService from "../services/authService";
 import productService from "../services/productService";
 import toast from "react-hot-toast";
+import orderService from "../services/orderService";
 
 const AdminContext = createContext();
 
@@ -9,6 +10,7 @@ export const AdminApi = ({ children }) => {
   const [getProfileData, setGetProfileData] = useState();
   const [productData, setProductData] = useState();
   const [getUsersData, setGetUsersData] = useState();
+  const [getOrdersData, setGetOrdersData] = useState();
   const [loading, setLoading] = useState(false);
 
   const fetchProfileData = async () => {
@@ -59,6 +61,7 @@ export const AdminApi = ({ children }) => {
       console.log(error.message);
     }
   };
+
   let deleteProduct = async (resourceData) => {
     try {
       let { data } = await authService.deleteProduct(resourceData);
@@ -79,10 +82,29 @@ export const AdminApi = ({ children }) => {
     }
   };
 
+    const FetchOrdersData = async () => {
+    try {
+      const data = await orderService.getAllOrders();
+      setGetOrdersData(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+      const FetchOrdersStatus = async (a,e) => {
+    try {
+      const data = await orderService.updateOrderStatus(a,e);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+
+
   useEffect(()=>{
     FetchUsersData()
     FetchProductsData()
     fetchProfileData()
+    FetchOrdersData()
   },[])
 
   return (
@@ -103,6 +125,10 @@ export const AdminApi = ({ children }) => {
         createProduct,
         updateProduct,
         deleteProduct,
+        getOrdersData, 
+        setGetOrdersData,
+        FetchOrdersData,
+        FetchOrdersStatus,
       }}
     >
       {children}

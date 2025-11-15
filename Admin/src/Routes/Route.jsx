@@ -13,6 +13,7 @@ import Login from "../Pages/Login";
 import Users from "../Components/Users/Users";
 import Products from "../Components/Products/Products";
 import CreateOrEditProduct from "../Components/Products/CreateOrEditProduct";
+import Order from "../Components/Orders/Order";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -25,6 +26,8 @@ export const router = createBrowserRouter(
         <Route path="products" element={<Products />}></Route>
         <Route path="products/create" element={<CreateOrEditProduct />}></Route>
         <Route path="products/:PID" element={<CreateOrEditProduct />}></Route>
+        <Route path="orders" element={<Order />}></Route>
+
         </Route>
       </Route>
       <Route element={<PublicWrapper/>}>

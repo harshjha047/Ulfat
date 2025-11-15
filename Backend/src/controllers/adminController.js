@@ -203,7 +203,7 @@ const deleteProduct = async (req, res) => {
 // Get all orders
 const getAllOrders = async (req, res) => {
   try {
-    const orders = await Order.find().populate("user", "name email");
+    const orders = await Order.find().populate("userId");
     res.json(orders);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -212,11 +212,12 @@ const getAllOrders = async (req, res) => {
 
 // Update order status
 const updateOrderStatus = async (req, res) => {
+  
   try {
     const order = await Order.findById(req.params.id);
     if (!order) return res.status(404).json({ message: "Order not found" });
 
-    order.status = req.body.status || order.status;
+    order.orderStatus = req.body.orderStatus || order.orderStatus;
     await order.save();
 
     res.json({ message: "Order status updated", order });

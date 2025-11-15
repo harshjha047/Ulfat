@@ -103,9 +103,9 @@ const requestReset = async (req, res) => {
 
 const resetPassword = async (req, res) => {
   try {
-    const { email, newPassword } = req.body;
+    const { email, password } = req.body;
 
-    if (!email || !newPassword) {
+    if (!email || !password) {
       return res
         .status(400)
         .json({ message: "Email and new password are required" });
@@ -118,7 +118,7 @@ const resetPassword = async (req, res) => {
     }
 
     // Update password
-    user.password = newPassword;
+    user.password = password;
 
     await user.save();
 
@@ -363,6 +363,11 @@ const logoutUser = (req, res) => {
       expires: new Date(0),
       secure: process.env.NODE_ENV === "production",
       sameSite: "none",
+    });
+        res.clearCookie("token", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
     });
 
     res.status(200).json({ message: "Logged out successfully" });

@@ -14,7 +14,7 @@ const { protect, admin } = require("../middlewares/authMiddleware");
 router.post("/", protect, addOrder);
 
 // Get logged-in user's orders
-router.get("/myorders", protect, getMyOrders);
+router.get("/myorders", protect, getMyOrders)
 
 // Get order by ID
 router.get("/:id", protect, getOrderById);

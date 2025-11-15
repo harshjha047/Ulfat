@@ -1,37 +1,58 @@
+const Cart = require("../models/cartModel");
 const Order = require("../models/orderModel");
 
-// @desc    Create new order
-// @route   POST /api/orders
-// @access  Private
+
+
+
 const addOrder = async (req, res) => {
-  const {
-    orderItems,
-    shippingAddress,
-    paymentMethod,
-    itemsPrice,
-    taxPrice,
-    shippingPrice,
-    totalPrice,
-  } = req.body;
+  try {
+    const userId = req.user._id;
 
-  if (!orderItems || orderItems.length === 0) {
-    return res.status(400).json({ message: "No order items" });
+    const cart = await Cart.findOne({ userId });
+
+    if (!cart || cart.items.length === 0) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Cart is empty. Cannot place order." });
+    }
+
+    // Copy items from cart to order
+    const orderItems = cart.items.map((item) => ({
+      productId: item.productId,
+      productName: item.productName,
+      size: item.size,
+      quantity: item.quantity,
+      priceAtOrder: item.priceAtAddTime,
+      subtotal: item.subtotal,
+    }));
+
+    const totalAmount = orderItems.reduce((sum, item) => sum + item.subtotal, 0);
+
+    const order = await Order.create({
+      userId,
+      items: orderItems,
+      totalAmount,
+      paymentInfo: { status: "Pending" },
+      shippingAddress: req.body,
+    });
+
+    // Clear cart after placing order
+    cart.items = [];
+    cart.totalAmount = 0;
+    await cart.save();
+
+    res.status(201).json({
+      success: true,
+      message: "Order placed successfully",
+      order,
+    });
+  } catch (err) {
+    console.error("Error creating order:", err);
+    res.status(500).json({ success: false, message: "Server error" });
   }
-
-  const order = new Order({
-    user: req.user._id,
-    orderItems,
-    shippingAddress,
-    paymentMethod,
-    itemsPrice,
-    taxPrice,
-    shippingPrice,
-    totalPrice,
-  });
-
-  const createdOrder = await order.save();
-  res.status(201).json(createdOrder);
 };
+
+
 
 // @desc    Get order by ID
 // @route   GET /api/orders/:id
@@ -50,8 +71,15 @@ const getOrderById = async (req, res) => {
 // @route   GET /api/orders/myorders
 // @access  Private
 const getMyOrders = async (req, res) => {
-  const orders = await Order.find({ user: req.user._id });
-  res.json(orders);
+  try {
+    const orders = await Order.find({ userId: req.user._id }).sort({
+      createdAt: -1,
+    });
+    res.status(200).json({ success: true, orders });
+  } catch (err) {
+    console.error("Error fetching orders:", err);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
 };
 
 // @desc    Get all orders (Admin)

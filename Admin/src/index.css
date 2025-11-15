@@ -10,3 +10,10 @@
 .customScrollBar::-webkit-scrollbar {
   width: 0px;
 }
+@font-face {
+  font-family: "SEGO";
+  src: url(../media/sego/SEGO.ttf);
+}
+.sego{
+  font-family: "SEGO";
+}
