@@ -18,6 +18,9 @@ const reviewSchema = new mongoose.Schema(
 const variantSchema = new mongoose.Schema({
   ProductID:{ type: String, required: true }
 });
+const sizeSchema = new mongoose.Schema({
+  Size:{ type: String, required: true }
+});
 
 const productSchema = new mongoose.Schema(
   {
@@ -26,6 +29,7 @@ const productSchema = new mongoose.Schema(
     new_price: { type: Number, required: true },
     old_price: { type: Number },
     category: { type: String, required: true },
+    size:[sizeSchema],
     images: [imageSchema],
     reviews: [reviewSchema],
     variants: [variantSchema],

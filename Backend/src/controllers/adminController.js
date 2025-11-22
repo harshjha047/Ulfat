@@ -68,6 +68,7 @@ try {
       images,
       variants,
       removedImages,
+      size,
     } = req.body;
 
     // Parse JSON strings from frontend (FormData converts them to strings)
@@ -105,6 +106,7 @@ try {
       category,
       images: finalImages,
       variants: variants || [],
+      size: size || [],
     });
 
     const createdProduct = await product.save();
@@ -134,10 +136,13 @@ const updateProduct = async (req, res) => {
     if (!product) return res.status(404).json({ message: "Product not found" });
 
     // Parse incoming JSON fields if needed
-    let { name, description, new_price, old_price, category, variants, removedImages } = req.body;
+    let { name, description, new_price, old_price, category, variants, removedImages, size } = req.body;
 
     if (variants && typeof variants === "string") {
       variants = JSON.parse(variants);
+    }
+        if (size && typeof size === "string") {
+      size = JSON.parse(size);
     }
 
     if (removedImages && typeof removedImages === "string") {
@@ -150,6 +155,7 @@ const updateProduct = async (req, res) => {
     if (new_price) product.new_price = new_price;
     if (old_price) product.old_price = old_price;
     if (category) product.category = category;
+    if (size) product.size = size;
     if (variants) product.variants = variants;
 
     // --- Remove selected images ---

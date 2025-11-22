@@ -18,11 +18,13 @@ function CreateOrEditProduct() {
     category: singleProductData?.category || "",
     images: singleProductData?.images || [],
     variants: singleProductData?.variants || [],
-    removedImages:[],
+    size: singleProductData?.size || [],
+    removedImages: [],
   };
   const imagesInit = { url: "", alt: "", file: null };
   const [inputData, setInputData] = useState(initState);
   const [varData, setVarData] = useState({ ProductID: "" });
+  const [sizeData, setSizeData] = useState({ Size: "" });
   const [removedImage, setRemovedImages] = useState([]);
   const [imgData, setImgData] = useState(imagesInit);
   const [tog, setTog] = useState(false);
@@ -35,14 +37,20 @@ function CreateOrEditProduct() {
     category,
     images,
     variants,
+    size,
   } = inputData;
   const { ProductID } = varData;
+  const { Size } = sizeData;
   const { url, alt, file } = imgData;
 
+
   const handleChange = (e) => {
+    e.preventDefault()
     const { name, value, type, files } = e.target;
     if (name == "variants") {
       setVarData({ ...varData, ProductID: value });
+    } else if (name == "size") {
+      setSizeData({ ...sizeData, Size: value });
     } else if (type == "file") {
       const file = files[0];
       const previewURL = URL.createObjectURL(file);
@@ -58,9 +66,18 @@ function CreateOrEditProduct() {
     setInputData({ ...inputData, variants: [...variants, varData] });
     setVarData({ ProductID: "" });
   };
+  const addSize = () => {
+    setInputData({ ...inputData, size: [...size, sizeData] });
+    setSizeData({ Size: "" });
+  };
+  const removeSize = (e) => {
+    const newArr = size.filter((i) => i.Size != e);
+    setInputData({ ...inputData, size: newArr });
+  };
+    console.log(size);
+
   const removeVar = (e) => {
     console.log(variants);
-
     const newArr = variants.filter((i) => i.ProductID != e);
     setInputData({ ...inputData, variants: newArr });
   };
@@ -94,22 +111,19 @@ function CreateOrEditProduct() {
     });
 
     formData.append("variants", JSON.stringify(inputData.variants || []));
-    formData.append(
-      "removedImages",
-      JSON.stringify(removedImage || [])
-    );
+    formData.append("size", JSON.stringify(inputData.size || []));
+    formData.append("removedImages", JSON.stringify(removedImage || []));
     if (location.pathname === "/dashboard/products/create") {
       createProduct(formData);
     } else {
       updateProduct(PID, formData);
     }
-          for (const [key, value] of formData.entries()) {
-        console.log(key, value);
-      }
+    for (const [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
   };
 
   console.log(removedImage);
-  
 
   return (
     <div className="w-full customScrollBar p-2">
@@ -208,9 +222,32 @@ function CreateOrEditProduct() {
               placeholder={"Category"}
             />
           </div>
+          <div className="border w-full ">
+            <div className=" relative">
+              <InputField
+                onChangeValue={handleChange}
+                name={"size"}
+                value={Size}
+                range={"100%"}
+                textInput={"Size"}
+              />
+              <div onClick={()=>{addSize()}} className=" absolute top-0 border h-full flex justify-center items-center px-4 right-0 text-xl">+</div>
+            </div>
+            <div className="flex p-2 flex-wrap gap-1">
+              {size.map((e,i)=>
+              <div className="border p-1 rounded flex gap-1 uppercase">
+                {e?.Size}
+                <span onClick={()=>removeSize(e?.Size)} className="bg-slate-400 px-1 flex rounded cursor-pointer justify-center items-center">
+                  -
+                </span>
+              </div>)}
+              
+            </div>
+          </div>
+
           <div className="w-full flex justify-between">
             <div className="w-[10%] p-2 outline-none border rounded-md text-[#8d8d8d] flex justify-center items-center text-lg font-semibold">
-              # 
+              #
             </div>
             <InputField
               onChangeValue={handleChange}

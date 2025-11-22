@@ -7,7 +7,7 @@ const uploadToCloudinary = (fileBuffer, folder = "products") => {
     const stream = cloudinary.uploader.upload_stream(
       {
         folder,
-        transformation: [{ width: 800, height: 800, crop: "fill" }],
+        // transformation: [{ width: 800, height: 800, crop: "fill" }],
       },
       (error, result) => {
         if (result) resolve(result);
