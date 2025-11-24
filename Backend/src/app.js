@@ -21,6 +21,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const allowedOrigins = [ "https://ulfat-in.vercel.app","http://localhost:5173","http://localhost:5174"];
 
+
 app.use(cors({
   origin: (origin, callback) => { 
     if (!origin) return callback(null, true);
@@ -39,7 +40,7 @@ app.use(
   })
 );
 app.use(helmet({
-  crossOriginResourcePolicy: false,
+  crossOriginResourcePolicy: { policy: "cross-origin" },
 }));
 
 

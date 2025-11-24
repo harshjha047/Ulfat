@@ -19,8 +19,8 @@ exports.registerUser = async (req, res) => {
 
     res.cookie("token", generateToken, {
       httpOnly: true,
-      sameSite: "lax", // or "strict" / "none" if using HTTPS
-      secure: false, // set true in production with HTTPS
+      sameSite: "none", // or "strict" / "none" if using HTTPS
+      secure: true, // set true in production with HTTPS
     });
     // Create new user
     const user = await User.create({ name, email, password });
@@ -57,8 +57,8 @@ exports.loginUser = async (req, res) => {
 
     res.cookie("token", generateToken, {
       httpOnly: true,
-      sameSite: "lax", // or "strict" / "none" if using HTTPS
-      secure: false, // set true in production with HTTPS
+      sameSite: "none", // or "strict" / "none" if using HTTPS
+      secure: true, // set true in production with HTTPS
     });
 
     res.json({

@@ -38,7 +38,11 @@ const registerUser = async (req, res) => {
       sameSite: "none",
     });
 
-    res.status(201).json( user );
+    res.status(201).json({ 
+        success: true, 
+        user, 
+        token: generateToken 
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -76,7 +80,11 @@ const loginUser = async (req, res) => {
       sameSite: "none",
     });
 
-    res.status(200).json( user );
+    res.status(200).json({ 
+        success: true, 
+        user, 
+        token: generateToken   
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
