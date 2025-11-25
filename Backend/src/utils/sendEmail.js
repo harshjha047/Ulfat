@@ -4,25 +4,21 @@ const sendEmail = async (email, subject, text) => {
   try {
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
-      port: 587,              // CHANGE TO 587
-      secure: false,          // MUST BE FALSE for 587
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
-      tls: {
-        // This helps prevent "Self Signed Certificate" errors on some cloud hosts
-        rejectUnauthorized: false
-      }
+      port: 587,
+      secure: false,
+      auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS },
+      // Force IPv4
+      connectionTimeout: 10000, // 10 seconds (don't wait 2 mins)
+      dnsTimeout: 10000,
     });
 
-    console.log("Attempting to send email...");
+    console.log("Attempting to send ema il...");
 
     await transporter.sendMail({
       from: `"ulfat.e.odhani" <${process.env.EMAIL_USER}>`,
       to: email,
       subject: subject,
-      text: text, 
+      text: text,
     });
 
     console.log("Email sent successfully");
