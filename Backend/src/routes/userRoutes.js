@@ -1,5 +1,5 @@
 const express = require("express");
-const { registerUser, loginUser, getUserProfile, updateUserProfile,getAddresses,addAddress,updateAddress,deleteAddress, getWishlist , addToWishlist, removeFromWishlist, requestReset, resetPassword, logoutUser} = require("../controllers/userController");
+const { registerUser, loginUser, getUserProfile, updateUserProfile,getAddresses,addAddress,updateAddress,deleteAddress, getWishlist , addToWishlist, removeFromWishlist, requestReset, resetPassword, logoutUser, sentOtp} = require("../controllers/userController");
 const { protect } = require("../middlewares/authMiddleware"); // middleware to protect routes
 const upload = require("../middlewares/uploadMiddleware");
 
@@ -9,6 +9,7 @@ const router = express.Router();
 
 
 // Register user
+router.post("/otp", sentOtp); //done
 router.post("/register", registerUser); //done
 
 // Login user

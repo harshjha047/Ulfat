@@ -3,7 +3,27 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const  uploadToCloudinary  = require("../utils/uploadToCloudinary");
 const cloudinary = require("../config/cloudinary");
+const sendEmail = require("../utils/sendEmail");
 
+
+const sentOtp = async (req, res) => {
+  try {
+    const { email,otp } = req.body;
+    console.log(req.body);
+    
+
+    await sendEmail(
+       email, 
+       "OTP for your ulfat.e.odhani authentication", 
+       `Verification Code: ${otp}`
+    );
+    
+    res.status(200).json({ message: "OTP sent to email"});
+
+  } catch (error) {
+    res.status(500).json({ message: "Server Error" });
+  }
+};
 
 //  Register new user
 const registerUser = async (req, res) => {
@@ -37,6 +57,7 @@ const registerUser = async (req, res) => {
       secure: true,
       sameSite: "none",
     });
+    
 
     res.status(201).json({ 
         success: true, 
@@ -400,4 +421,5 @@ module.exports = {
   requestReset,
   resetPassword,
   logoutUser,
+  sentOtp
 };
