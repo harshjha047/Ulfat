@@ -3,22 +3,19 @@ const nodemailer = require("nodemailer");
 const sendEmail = async (email, subject, text) => {
   try {
     const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 465, // SSL Port
-      secure: true, // Must be TRUE for 465
+      host: "smtp-relay.brevo.com", // Brevo's Server
+      port: 587,                      // Standard Port
+      secure: false,                  // True for 465, false for other ports
       auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
+        user: process.env.EMAIL_USER, // Your Brevo Login Email
+        pass: process.env.EMAIL_PASS, // Your Brevo SMTP Key (starts with xsmtp...)
       },
-      family: 4, // Force IPv4
-      logger: true, // Keep debug logs on
-      debug: true,
     });
 
-    console.log(`Attempting to send email to ${email}...`);
+    console.log(`Attempting to send email to ${email} via Brevo...`);
 
     await transporter.sendMail({
-      from: `"ulfat.e.odhani" <${process.env.EMAIL_USER}>`,
+      from: `"Ulfat-e-Odhani" <${process.env.EMAIL_USER}>`, // Must match verified sender in Brevo
       to: email,
       subject: subject,
       text: text,
@@ -26,7 +23,7 @@ const sendEmail = async (email, subject, text) => {
 
     console.log("Email sent successfully");
   } catch (error) {
-    console.log("Email not sent. Error details:", error);
+    console.log("Email not sent. Error:", error);
   }
 };
 
