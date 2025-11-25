@@ -3,15 +3,20 @@ const nodemailer = require("nodemailer");
 const sendEmail = async (email, subject, text) => {
   try {
     const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com", // Explicitly define the host
-      port: 465,              // Use Port 465 (SSL)
-      secure: true,           // "true" for port 465 (This is crucial)
+      host: "smtp.gmail.com",
+      port: 587,              // CHANGE TO 587
+      secure: false,          // MUST BE FALSE for 587
       auth: {
-        // ALWAYS use Environment Variables for security
-        user: process.env.EMAIL_USER, 
-        pass: process.env.EMAIL_PASS, 
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
       },
+      tls: {
+        // This helps prevent "Self Signed Certificate" errors on some cloud hosts
+        rejectUnauthorized: false
+      }
     });
+
+    console.log("Attempting to send email...");
 
     await transporter.sendMail({
       from: `"ulfat.e.odhani" <${process.env.EMAIL_USER}>`,
@@ -22,7 +27,7 @@ const sendEmail = async (email, subject, text) => {
 
     console.log("Email sent successfully");
   } catch (error) {
-    console.log("Email not sent", error);
+    console.log("Email not sent:", error.message);
   }
 };
 
