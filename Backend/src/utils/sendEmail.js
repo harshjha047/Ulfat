@@ -20,7 +20,7 @@ const sendEmail = async (email, subject, text) => {
       {
         headers: {
           'accept': 'application/json',
-          'api-key': process.env.EMAIL_PASS, // Use the API Key here
+          'api-key': process.env.BREVO_API_KEY, // Use the API Key here
           'content-type': 'application/json'
         }
       }
