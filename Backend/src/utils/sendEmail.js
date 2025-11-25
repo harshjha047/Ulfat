@@ -3,19 +3,21 @@ const nodemailer = require("nodemailer");
 const sendEmail = async (email, subject, text) => {
   try {
     const transporter = nodemailer.createTransport({
-      service: "gmail", // Or use 'host' and 'port' for other providers
+      host: "smtp.gmail.com", // Explicitly define the host
+      port: 465,              // Use Port 465 (SSL)
+      secure: true,           // "true" for port 465 (This is crucial)
       auth: {
-        user: "ulfat.e.odhani@gmail.com", // Your actual Gmail
-        pass: "tfjz gifu tqyh qpkf",  // The 16-char APP PASSWORD (not your login password)
+        // ALWAYS use Environment Variables for security
+        user: process.env.EMAIL_USER, 
+        pass: process.env.EMAIL_PASS, 
       },
     });
 
     await transporter.sendMail({
-      from: '"ulfat.e.odhani" <ulfat.e.odhani@gmail.com>',
+      from: `"ulfat.e.odhani" <${process.env.EMAIL_USER}>`,
       to: email,
       subject: subject,
-      text: text, // Plain text body
-      // html: "<b>Hello world?</b>" // You can add HTML here if you want styling
+      text: text, 
     });
 
     console.log("Email sent successfully");
