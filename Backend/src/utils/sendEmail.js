@@ -6,13 +6,28 @@ const sendEmail = async (email, subject, text) => {
       host: "smtp.gmail.com",
       port: 587,
       secure: false,
-      auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS },
-      // Force IPv4
-      connectionTimeout: 10000, // 10 seconds (don't wait 2 mins)
-      dnsTimeout: 10000,
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+      // ⚠️ NETWORK FIXES START HERE ⚠️
+      tls: {
+        rejectUnauthorized: false
+      },
+      // 1. Force the server to use IPv4 (fixes the hang)
+      family: 4, 
+      
+      // 2. Set strict timeouts so you don't wait 2 minutes
+      connectionTimeout: 10000, // 10 seconds
+      greetingTimeout: 5000,    // 5 seconds
+      socketTimeout: 10000,     // 10 seconds
+      
+      // 3. Enable debug logs so we see exactly where it stops
+      logger: true,
+      debug: true 
     });
 
-    console.log("Attempting to send ema il...");
+    console.log(`Attempting to send email to ${email}...`);
 
     await transporter.sendMail({
       from: `"ulfat.e.odhani" <${process.env.EMAIL_USER}>`,
@@ -23,7 +38,7 @@ const sendEmail = async (email, subject, text) => {
 
     console.log("Email sent successfully");
   } catch (error) {
-    console.log("Email not sent:", error.message);
+    console.log("Email not sent. Error details:", error);
   }
 };
 
