@@ -302,10 +302,3 @@ This project is licensed under the **MIT License** — free for personal and com
 ## 📞 Contact
 
 **Author:** Div  
-**Email:** you@example.com  
-**GitHub:** [your-github-link]  
-**LinkedIn:** [your-linkedin-profile]  
-
----
-
-> 💡 *This backend is fully modular — easy to scale with features like coupons, analytics, and inventory management.*
